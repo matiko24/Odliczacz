@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Nazwa :"
-        android:id="@+id/textView" />
+        android:id="@+id/input_dialog_description" />
 
     <EditText
-        android:id="@+id/edittext"
+        android:id="@+id/input_dialog_edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint=""

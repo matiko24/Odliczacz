@@ -21,22 +21,22 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/add_FAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="#263238"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:srcCompat="@drawable/ic_action_add" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/refresh"
+        android:id="@+id/refresh_FAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_toLeftOf="@id/fab"
+        android:layout_toLeftOf="@id/add_FAB"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="#263238"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:srcCompat="@drawable/ic_action_refresh" />
 </RelativeLayout>

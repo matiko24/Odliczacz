@@ -36,8 +36,8 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.items_list, container, false);
 
-        FloatingActionButton addNewEventFAB = (FloatingActionButton) view.findViewById(R.id.fab);
-        FloatingActionButton refreshEventsListFAB = (FloatingActionButton) view.findViewById(R.id.refresh);
+        FloatingActionButton addNewEventFAB = (FloatingActionButton) view.findViewById(R.id.add_FAB);
+        FloatingActionButton refreshEventsListFAB = (FloatingActionButton) view.findViewById(R.id.refresh_FAB);
 
         refreshEventsListFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +111,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setView(promptView);
 
-        final EditText newEventName = (EditText) promptView.findViewById(R.id.edittext);
+        final EditText newEventName = (EditText) promptView.findViewById(R.id.input_dialog_edittext);
         alertDialogBuilder.setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

@@ -1,4 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="event_name_text_size">25sp</dimen>
+    <dimen name="event_elapsed_time_text_size">20sp</dimen>
 </resources>
