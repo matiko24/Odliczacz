@@ -46,6 +46,11 @@ public class EventsListAdapter extends CursorAdapter {
         Date currentDate = new Date();
         long different = currentDate.getTime() - eventDate.getTime();
 
+        String isFuture = "";
+        if (different < 0)
+            isFuture = "-";
+        different = Math.abs(different);
+
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
         long hoursInMilli = minutesInMilli * 60;
@@ -64,6 +69,6 @@ public class EventsListAdapter extends CursorAdapter {
 
         eventNameTV.setText(eventName);
         eventNameTV.setTypeface(null, Typeface.BOLD);
-        elapsedTimeTV.setText(elapsedDays + "dni " + elapsedHours + "godzin " + elapsedMinutes + "minut " /*+ elapsedSeconds + "sekund"*/);
+        elapsedTimeTV.setText(isFuture + " " + elapsedDays + "dni " + elapsedHours + "godzin " + elapsedMinutes + "minut " /*+ elapsedSeconds + "sekund"*/);
     }
 }

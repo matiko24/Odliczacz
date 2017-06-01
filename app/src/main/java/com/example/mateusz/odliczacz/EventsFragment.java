@@ -11,18 +11,24 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.mateusz.odliczacz.database.Event;
 import com.example.mateusz.odliczacz.database.MyContentProvider;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -49,7 +55,6 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
             @Override
             public void onClick(View view) {
                 showInputDialog();
-
             }
         });
         return view;
@@ -105,30 +110,59 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
     }
 
     protected void showInputDialog() {
-
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setView(promptView);
 
-        final EditText newEventName = (EditText) promptView.findViewById(R.id.input_dialog_edittext);
-        alertDialogBuilder.setCancelable(true)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        ContentValues values = new ContentValues();
-                        values.put(Event.EventEntry.EVENT_NAME, newEventName.getText().toString());
-                        values.put(Event.EventEntry.EVENT_DATE, getCurrentData());
-                        getContext().getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
-                        getLoaderManager().restartLoader(0, null, EventsFragment.this);
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+        final CheckBox isNowEventCheckBox = (CheckBox) promptView.findViewById(R.id.is_now_event_check_box);
+        final DatePicker datePicker = (DatePicker) promptView.findViewById(R.id.date_picker);
+        final TimePicker timePicker = (TimePicker) promptView.findViewById(R.id.time_picker);
+        datePicker.setVisibility(View.GONE);
+        timePicker.setVisibility(View.GONE);
 
+        isNowEventCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    datePicker.setVisibility(View.GONE);
+                    timePicker.setVisibility(View.GONE);
+                } else {
+                    datePicker.setVisibility(View.VISIBLE);
+                    timePicker.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        final EditText newEventName = (EditText) promptView.findViewById(R.id.new_event_name);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                String eventName = newEventName.getText().toString();
+                if (TextUtils.isEmpty(eventName)) {
+                    Toast.makeText(getContext(), "Wydarzenie bez nazwy nie zostało dodane", Toast.LENGTH_SHORT).show();
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put(Event.EventEntry.EVENT_NAME, newEventName.getText().toString());
+                    if (isNowEventCheckBox.isChecked()) {
+                        values.put(Event.EventEntry.EVENT_DATE, getCurrentData());
+                    } else {
+                        Calendar userSetDate = Calendar.getInstance();
+                        userSetDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                        values.put(Event.EventEntry.EVENT_DATE, sdf.format(userSetDate.getTimeInMillis()));
+                    }
+                    getContext().getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
+                    getLoaderManager().restartLoader(0, null, EventsFragment.this);
+                }
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
