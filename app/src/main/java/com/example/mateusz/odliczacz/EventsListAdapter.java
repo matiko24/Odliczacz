@@ -3,6 +3,7 @@ package com.example.mateusz.odliczacz;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,59 +48,111 @@ public class EventsListAdapter extends CursorAdapter {
             periodToDisplay = "- ";
         }
 
-        if (differenceBetweenDates.getYears() > 0) {
-            periodToDisplay += +differenceBetweenDates.getYears();
-            if (differenceBetweenDates.getYears() == 1)
-                periodToDisplay += "rok ";
-            else if (differenceBetweenDates.getYears() < 5)
-                periodToDisplay += "lata ";
-            else
-                periodToDisplay += "lat ";
-            periodToDisplay += differenceBetweenDates.getMonths() + "miesiecy " + differenceBetweenDates.getDays() + "dni";
+        int differenceYears = differenceBetweenDates.getYears();
+        int differenceMonths = differenceBetweenDates.getMonths();
+        int differenceDays = differenceBetweenDates.getDays();
+        int differenceHours = differenceBetweenDates.getHours();
+        long differenceMinutes = differenceBetweenDates.getMinutes();
+        long differenceSecunds = differenceBetweenDates.getSeconds();
+
+        if (differenceYears > 0) {
+            periodToDisplay += getYearString(differenceYears);
+            periodToDisplay += getMonthString(differenceMonths);
+            periodToDisplay += getDayString(differenceDays);
         } else if (differenceBetweenDates.getMonths() > 0) {
-            periodToDisplay += +differenceBetweenDates.getMonths();
-            if (differenceBetweenDates.getMonths() == 1)
-                periodToDisplay += "miesiąc ";
-            else if (differenceBetweenDates.getMonths() < 5)
-                periodToDisplay += "miesiące ";
-            else
-                periodToDisplay += "miesięcy ";
-            periodToDisplay += differenceBetweenDates.getDays() + "dni " + differenceBetweenDates.getHours() + "godzin";
+            periodToDisplay += getMonthString(differenceMonths);
+            periodToDisplay += getDayString(differenceDays);
+            periodToDisplay += getHourString(differenceHours);
         } else if (differenceBetweenDates.getDays() > 0) {
-            periodToDisplay += +differenceBetweenDates.getDays();
-            if (differenceBetweenDates.getDays() == 1)
-                periodToDisplay += "dzień ";
-            else
-                periodToDisplay += "dni ";
-            periodToDisplay += differenceBetweenDates.getHours() + "godzin " + differenceBetweenDates.getMinutes() + "minut";
+            periodToDisplay += getDayString(differenceDays);
+            periodToDisplay += getHourString(differenceHours);
+            periodToDisplay += getMinuteString(differenceMinutes);
         } else if (differenceBetweenDates.getHours() > 0) {
-            periodToDisplay += differenceBetweenDates.getHours();
-            if (differenceBetweenDates.getHours() < 5)
-                periodToDisplay += "godzina ";
-            else
-                periodToDisplay += "godzin ";
-            periodToDisplay += differenceBetweenDates.getMinutes() + "minut " + differenceBetweenDates.getSeconds() + "sekund";
+            periodToDisplay += getHourString(differenceHours);
+            periodToDisplay += getMinuteString(differenceMinutes);
+            periodToDisplay += getSecondsString(differenceSecunds);
         } else if (differenceBetweenDates.getMinutes() > 0) {
-            periodToDisplay += differenceBetweenDates.getMinutes();
-            if (differenceBetweenDates.getMinutes() == 1)
-                periodToDisplay += "minuta ";
-            else if (differenceBetweenDates.getMinutes() < 5)
-                periodToDisplay += "minuty ";
-            else
-                periodToDisplay += "minut ";
-            periodToDisplay += differenceBetweenDates.getSeconds() + "sekund";
+            periodToDisplay += getMinuteString(differenceMinutes);
+            periodToDisplay += getSecondsString(differenceSecunds);
         } else {
-            periodToDisplay += differenceBetweenDates.getSeconds();
-            if (differenceBetweenDates.getSeconds() == 1)
-                periodToDisplay += "sekunda";
-            else if (differenceBetweenDates.getSeconds() < 5)
-                periodToDisplay += "sekundy";
-            else
-                periodToDisplay += "sekund";
+            periodToDisplay += getSecondsString(differenceSecunds);
         }
 
         eventNameTV.setText(eventName);
         eventNameTV.setTypeface(null, Typeface.BOLD);
         elapsedTimeTV.setText(periodToDisplay);
+    }
+
+    @NonNull
+    private String getSecondsString(long second) {
+        String secundString = String.valueOf(second);
+        if (second == 1)
+            secundString += "sekunda";
+        else if (second < 5)
+            secundString += "sekundy";
+        else
+            secundString += "sekund";
+        return secundString;
+    }
+
+    @NonNull
+    private String getMinuteString(long minute) {
+        String minuteString = String.valueOf(minute);
+        int minuteLastNumber = (int) minute % 10;
+        if (minute == 1)
+            minuteString += "minuta ";
+        else if (minuteLastNumber < 5 && minuteLastNumber != 0)
+            minuteString += "minuty ";
+        else
+            minuteString += "minut ";
+        return minuteString;
+    }
+
+    @NonNull
+    private String getHourString(int hour) {
+        String hourString = String.valueOf(hour);
+        if (hour == 1)
+            hourString += "godzina ";
+        else if (hour < 5 && hour != 0 || hour > 21)
+            hourString += "godziny ";
+        else
+            hourString += "godzin ";
+        return hourString;
+    }
+
+    @NonNull
+    private String getDayString(int day) {
+        String dayString = String.valueOf(day);
+        if (day == 1)
+            dayString += "dzień ";
+        else
+            dayString += "dni ";
+        return dayString;
+    }
+
+    @NonNull
+    private String getMonthString(int month) {
+        String monthString = String.valueOf(month);
+        int monthLastNumber = month % 10;
+        if (month == 1)
+            monthString += "miesiąc ";
+        else if (monthLastNumber < 5 && monthLastNumber != 0)
+            monthString += "miesiące ";
+        else
+            monthString += "miesięcy ";
+        return monthString;
+    }
+
+    @NonNull
+    private String getYearString(int year) {
+        String yearString = String.valueOf(year);
+        int yearLastNumber = year % 10;
+        if (year == 1)
+            yearString += "rok ";
+        else if (yearLastNumber < 5 && yearLastNumber != 0)
+            yearString += "lata ";
+        else
+            yearString += "lat ";
+        return yearString;
     }
 }
