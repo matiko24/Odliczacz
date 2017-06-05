@@ -2,6 +2,7 @@ package com.example.mateusz.odliczacz;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,9 +28,7 @@ import android.widget.Toast;
 import com.example.mateusz.odliczacz.database.Event;
 import com.example.mateusz.odliczacz.database.MyContentProvider;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import org.joda.time.DateTime;
 
 /**
  * Created by Mateusz on 2017-05-30.
@@ -40,7 +39,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.items_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_events_list, container, false);
 
         FloatingActionButton addNewEventFAB = (FloatingActionButton) view.findViewById(R.id.add_FAB);
         FloatingActionButton refreshEventsListFAB = (FloatingActionButton) view.findViewById(R.id.refresh_FAB);
@@ -57,6 +56,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
                 showInputDialog();
             }
         });
+
         return view;
     }
 
@@ -85,6 +85,16 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
                 return true;
             }
         });
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), EventDetailActivity.class);
+                intent.putExtra("event_id", String.valueOf(eventsListAdapter.getCursor().getLong(0)));
+                intent.putExtra("event_date", eventsListAdapter.getCursor().getString(2));
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -118,6 +128,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
         final CheckBox isNowEventCheckBox = (CheckBox) promptView.findViewById(R.id.is_now_event_check_box);
         final DatePicker datePicker = (DatePicker) promptView.findViewById(R.id.date_picker);
         final TimePicker timePicker = (TimePicker) promptView.findViewById(R.id.time_picker);
+        timePicker.setIs24HourView(true);
         datePicker.setVisibility(View.GONE);
         timePicker.setVisibility(View.GONE);
 
@@ -147,10 +158,9 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
                     if (isNowEventCheckBox.isChecked()) {
                         values.put(Event.EventEntry.EVENT_DATE, getCurrentData());
                     } else {
-                        Calendar userSetDate = Calendar.getInstance();
-                        userSetDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                        values.put(Event.EventEntry.EVENT_DATE, sdf.format(userSetDate.getTimeInMillis()));
+                        DateTime userSetDate = new DateTime(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                        values.put(Event.EventEntry.EVENT_DATE, userSetDate.toString());
+                        System.out.println(newEventName.getText().toString() + " " + userSetDate.toString());
                     }
                     getContext().getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
                     getLoaderManager().restartLoader(0, null, EventsFragment.this);
@@ -168,7 +178,6 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
     }
 
     private String getCurrentData() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        return sdf.format(new Date());
+        return new DateTime().toString();
     }
 }

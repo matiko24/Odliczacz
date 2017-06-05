@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 /**
  * Created by Mateusz on 2017-05-30.
@@ -24,7 +23,7 @@ public class EventsListAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.row_item_list, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.row_event_list, parent, false);
     }
 
     @Override
@@ -33,42 +32,74 @@ public class EventsListAdapter extends CursorAdapter {
         TextView elapsedTimeTV = (TextView) view.findViewById(R.id.event_elapsed_time);
 
         String eventName = cursor.getString(1);
-        String elapsedTime = cursor.getString(2);
+        String elapsedTimeString = cursor.getString(2);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        Date eventDate = null;
-        try {
-            eventDate = sdf.parse(elapsedTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        DateTime elapsedTimeDataTime = DateTime.parse(elapsedTimeString);
+        DateTime currentDate = new DateTime();
+
+        Period differenceBetweenDates;
+        String periodToDisplay = "";
+        System.out.println(currentDate.isAfter(elapsedTimeDataTime));
+        if (currentDate.isAfter(elapsedTimeDataTime)) {
+            differenceBetweenDates = new Period(elapsedTimeDataTime, currentDate);
+        } else {
+            differenceBetweenDates = new Period(currentDate, elapsedTimeDataTime);
+            periodToDisplay = "- ";
         }
 
-        Date currentDate = new Date();
-        long different = currentDate.getTime() - eventDate.getTime();
-
-        String isFuture = "";
-        if (different < 0)
-            isFuture = "-";
-        different = Math.abs(different);
-
-        long secondsInMilli = 1000;
-        long minutesInMilli = secondsInMilli * 60;
-        long hoursInMilli = minutesInMilli * 60;
-        long daysInMilli = hoursInMilli * 24;
-
-        long elapsedDays = different / daysInMilli;
-        different = different % daysInMilli;
-
-        long elapsedHours = different / hoursInMilli;
-        different = different % hoursInMilli;
-
-        long elapsedMinutes = different / minutesInMilli;
-        different = different % minutesInMilli;
-
-        long elapsedSeconds = different / secondsInMilli;
+        if (differenceBetweenDates.getYears() > 0) {
+            periodToDisplay += +differenceBetweenDates.getYears();
+            if (differenceBetweenDates.getYears() == 1)
+                periodToDisplay += "rok ";
+            else if (differenceBetweenDates.getYears() < 5)
+                periodToDisplay += "lata ";
+            else
+                periodToDisplay += "lat ";
+            periodToDisplay += differenceBetweenDates.getMonths() + "miesiecy " + differenceBetweenDates.getDays() + "dni";
+        } else if (differenceBetweenDates.getMonths() > 0) {
+            periodToDisplay += +differenceBetweenDates.getMonths();
+            if (differenceBetweenDates.getMonths() == 1)
+                periodToDisplay += "miesiąc ";
+            else if (differenceBetweenDates.getMonths() < 5)
+                periodToDisplay += "miesiące ";
+            else
+                periodToDisplay += "miesięcy ";
+            periodToDisplay += differenceBetweenDates.getDays() + "dni " + differenceBetweenDates.getHours() + "godzin";
+        } else if (differenceBetweenDates.getDays() > 0) {
+            periodToDisplay += +differenceBetweenDates.getDays();
+            if (differenceBetweenDates.getDays() == 1)
+                periodToDisplay += "dzień ";
+            else
+                periodToDisplay += "dni ";
+            periodToDisplay += differenceBetweenDates.getHours() + "godzin " + differenceBetweenDates.getMinutes() + "minut";
+        } else if (differenceBetweenDates.getHours() > 0) {
+            periodToDisplay += differenceBetweenDates.getHours();
+            if (differenceBetweenDates.getHours() < 5)
+                periodToDisplay += "godzina ";
+            else
+                periodToDisplay += "godzin ";
+            periodToDisplay += differenceBetweenDates.getMinutes() + "minut " + differenceBetweenDates.getSeconds() + "sekund";
+        } else if (differenceBetweenDates.getMinutes() > 0) {
+            periodToDisplay += differenceBetweenDates.getMinutes();
+            if (differenceBetweenDates.getMinutes() == 1)
+                periodToDisplay += "minuta ";
+            else if (differenceBetweenDates.getMinutes() < 5)
+                periodToDisplay += "minuty ";
+            else
+                periodToDisplay += "minut ";
+            periodToDisplay += differenceBetweenDates.getSeconds() + "sekund";
+        } else {
+            periodToDisplay += differenceBetweenDates.getSeconds();
+            if (differenceBetweenDates.getSeconds() == 1)
+                periodToDisplay += "sekunda";
+            else if (differenceBetweenDates.getSeconds() < 5)
+                periodToDisplay += "sekundy";
+            else
+                periodToDisplay += "sekund";
+        }
 
         eventNameTV.setText(eventName);
         eventNameTV.setTypeface(null, Typeface.BOLD);
-        elapsedTimeTV.setText(isFuture + " " + elapsedDays + "dni " + elapsedHours + "godzin " + elapsedMinutes + "minut " /*+ elapsedSeconds + "sekund"*/);
+        elapsedTimeTV.setText(periodToDisplay);
     }
 }

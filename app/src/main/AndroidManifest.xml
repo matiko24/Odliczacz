@@ -22,9 +22,9 @@
 
         <provider
             android:name=".database.MyContentProvider"
-            android:authorities="com.example.mateusz.odliczacz"></provider>
+            android:authorities="com.example.mateusz.odliczacz" />
 
-        <activity android:name=".EventDetail"></activity>
+        <activity android:name=".EventDetailActivity" />
     </application>
 
 </manifest>

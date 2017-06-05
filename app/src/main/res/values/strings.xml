@@ -3,4 +3,14 @@
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Odśwież</string>
     <string name="action_delete">Usuń wszystkie</string>
+    <string name="event_date">Data wydarzenia:</string>
+    <string name="delete_event">USUŃ WYDARZENIE</string>
+    <string-array name="units_of_time">
+        <item>Rok</item>
+        <item>Miesiąc</item>
+        <item>Dzień</item>
+        <item>Godzina</item>
+        <item>Minuta</item>
+        <item>Sekunda</item>
+    </string-array>
 </resources>

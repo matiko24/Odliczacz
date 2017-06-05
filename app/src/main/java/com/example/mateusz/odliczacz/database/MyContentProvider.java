@@ -12,9 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.example.mateusz.odliczacz.database.DBHelper;
-import com.example.mateusz.odliczacz.database.Event;
-
 /**
  * Created by Mateusz on 2017-05-31.
  */
