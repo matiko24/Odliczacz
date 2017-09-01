@@ -5,6 +5,14 @@
     <string name="action_delete">Usuń wszystkie</string>
     <string name="event_date">Data wydarzenia:</string>
     <string name="delete_event">USUŃ WYDARZENIE</string>
+    <string name="toast_reset_date">Data została zresetowana</string>
+    <string name="toast_event_without_name">Wydarzenie bez nazwy nie zostało dodane</string>
+    <string name="toast_event_with_name_which_exists">"Istnieje już wydarzenie o takiej nazwie"</string>
+    <string name="no">Nie</string>
+    <string name="yes">Tak</string>
+    <string name="delete_confirmation">Na pewno usunąć?</string>
+    <string name="event_history">HISTORIA WYDARZENIA</string>
+
     <string-array name="units_of_time">
         <item>Rok</item>
         <item>Miesiąc</item>

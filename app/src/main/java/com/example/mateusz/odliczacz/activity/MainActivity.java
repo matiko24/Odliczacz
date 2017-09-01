@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz;
+package com.example.mateusz.odliczacz.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.mateusz.odliczacz.database.MyContentProvider;
+import com.example.mateusz.odliczacz.R;
+import com.example.mateusz.odliczacz.data.MyContentProvider;
 
 public class MainActivity extends AppCompatActivity {
 

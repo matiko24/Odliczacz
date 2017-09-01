@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz;
+package com.example.mateusz.odliczacz.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mateusz.odliczacz.R;
+
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-
-/**
- * Created by Mateusz on 2017-05-30.
- */
+import org.joda.time.PeriodType;
 
 public class EventsListAdapter extends CursorAdapter {
     public EventsListAdapter(Context context, Cursor c, int flags) {
@@ -42,9 +41,9 @@ public class EventsListAdapter extends CursorAdapter {
         String periodToDisplay = "";
         System.out.println(currentDate.isAfter(elapsedTimeDataTime));
         if (currentDate.isAfter(elapsedTimeDataTime)) {
-            differenceBetweenDates = new Period(elapsedTimeDataTime, currentDate);
+            differenceBetweenDates = new Period(elapsedTimeDataTime, currentDate, PeriodType.yearMonthDayTime());
         } else {
-            differenceBetweenDates = new Period(currentDate, elapsedTimeDataTime);
+            differenceBetweenDates = new Period(currentDate, elapsedTimeDataTime, PeriodType.yearMonthDayTime());
             periodToDisplay = "- ";
         }
 

@@ -1,9 +1,10 @@
-package com.example.mateusz.odliczacz;
+package com.example.mateusz.odliczacz.fragment;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -21,18 +22,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.mateusz.odliczacz.database.Event;
-import com.example.mateusz.odliczacz.database.MyContentProvider;
+import com.example.mateusz.odliczacz.R;
+import com.example.mateusz.odliczacz.activity.EventDetailActivity;
+import com.example.mateusz.odliczacz.adapter.EventsListAdapter;
+import com.example.mateusz.odliczacz.data.Event;
+import com.example.mateusz.odliczacz.data.MyContentProvider;
 
 import org.joda.time.DateTime;
-
-/**
- * Created by Mateusz on 2017-05-30.
- */
 
 public class EventsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     EventsListAdapter eventsListAdapter;
@@ -53,7 +52,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
         addNewEventFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showInputDialog();
+                showInputDialogToAddNewEvent();
             }
         });
 
@@ -65,7 +64,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
         super.onActivityCreated(savedInstanceState);
 
         String[] projection = {Event.EventEntry._ID, Event.EventEntry.EVENT_NAME, Event.EventEntry.EVENT_DATE};
-        Cursor eventsCursor = getActivity().getContentResolver().query(MyContentProvider.CONTENT_URI, projection, null, null, null);
+        Cursor eventsCursor = getActivity().getContentResolver().query(MyContentProvider.CONTENT_URI, projection, Event.EventEntry.EVENT_NAME, null, null);
 
         eventsListAdapter = new EventsListAdapter(getContext(), eventsCursor, 0);
         setListAdapter(eventsListAdapter);
@@ -75,13 +74,13 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 ContentValues values = new ContentValues();
+                values.put(Event.EventEntry.EVENT_NAME, eventsListAdapter.getCursor().getString(1));
                 values.put(Event.EventEntry.EVENT_DATE, getCurrentData());
-                String[] selectionArg = {String.valueOf(eventsListAdapter.getCursor().getLong(0))};
 
-                getContext().getContentResolver().update(MyContentProvider.CONTENT_URI, values, Event.EventEntry._ID + "= ?", selectionArg);
+                getContext().getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
                 getLoaderManager().restartLoader(0, null, EventsFragment.this);
 
-                Toast.makeText(getActivity(), "Data została zresetowana", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.toast_reset_date), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -89,7 +88,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), EventDetailActivity.class);
-                intent.putExtra("event_id", String.valueOf(eventsListAdapter.getCursor().getLong(0)));
+                intent.putExtra("event_name", eventsListAdapter.getCursor().getString(1));
                 intent.putExtra("event_date", eventsListAdapter.getCursor().getString(2));
                 startActivity(intent);
             }
@@ -98,14 +97,9 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {Event.EventEntry._ID, Event.EventEntry.EVENT_NAME, Event.EventEntry.EVENT_DATE};
-        Loader<Cursor> loader = new CursorLoader(this.getContext(), MyContentProvider.CONTENT_URI, projection, null, null, null);
+        Loader<Cursor> loader = new CursorLoader(this.getContext(), MyContentProvider.CONTENT_URI, projection, null, null, Event.EventEntry.EVENT_DATE + " DESC");
         return loader;
     }
 
@@ -119,9 +113,10 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
         eventsListAdapter.swapCursor(null);
     }
 
-    protected void showInputDialog() {
+    protected void showInputDialogToAddNewEvent() {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setView(promptView);
 
@@ -145,27 +140,31 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
             }
         });
 
-        final EditText newEventName = (EditText) promptView.findViewById(R.id.new_event_name);
+        final EditText newEventNameEditText = (EditText) promptView.findViewById(R.id.new_event_name);
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                String eventName = newEventName.getText().toString();
-                if (TextUtils.isEmpty(eventName)) {
-                    Toast.makeText(getContext(), "Wydarzenie bez nazwy nie zostało dodane", Toast.LENGTH_SHORT).show();
+                String newEventNameString = newEventNameEditText.getText().toString();
+
+                if (TextUtils.isEmpty(newEventNameString)) {
+                    Toast.makeText(getContext(), getString(R.string.toast_event_without_name), Toast.LENGTH_SHORT).show();
+                } else if (ifSuchNameEventExist(newEventNameString)) {
+                    Toast.makeText(getContext(), getString(R.string.toast_event_with_name_which_exists), Toast.LENGTH_SHORT).show();
                 } else {
                     ContentValues values = new ContentValues();
-                    values.put(Event.EventEntry.EVENT_NAME, newEventName.getText().toString());
+                    values.put(Event.EventEntry.EVENT_NAME, newEventNameString);
                     if (isNowEventCheckBox.isChecked()) {
                         values.put(Event.EventEntry.EVENT_DATE, getCurrentData());
                     } else {
+                        //Todo: depracted getTime metod
                         DateTime userSetDate = new DateTime(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                         values.put(Event.EventEntry.EVENT_DATE, userSetDate.toString());
-                        System.out.println(newEventName.getText().toString() + " " + userSetDate.toString());
                     }
                     getContext().getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
                     getLoaderManager().restartLoader(0, null, EventsFragment.this);
                 }
             }
+
         });
         alertDialogBuilder.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
@@ -173,11 +172,17 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
                         dialog.cancel();
                     }
                 });
+
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
 
     private String getCurrentData() {
         return new DateTime().toString();
+    }
+
+    private boolean ifSuchNameEventExist(String eventName) {
+        Cursor cursor = getActivity().getContentResolver().query(Uri.parse(MyContentProvider.CONTENT_URI + "/" + eventName), new String[]{"name"}, null, null, null);
+        return cursor.getCount() > 0;
     }
 }

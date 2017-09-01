@@ -1,10 +1,6 @@
-package com.example.mateusz.odliczacz.database;
+package com.example.mateusz.odliczacz.data;
 
 import android.provider.BaseColumns;
-
-/**
- * Created by Mateusz on 2017-05-30.
- */
 
 public final class Event {
 
