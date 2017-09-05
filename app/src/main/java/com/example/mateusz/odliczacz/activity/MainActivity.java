@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.mateusz.odliczacz.R;
-import com.example.mateusz.odliczacz.data.MyContentProvider;
+import com.example.mateusz.odliczacz.fragment.EventsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle(getString(R.string.your_events));
 
         //getBaseContext().deleteDatabase("Odliczacz.db");
     }
@@ -29,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        EventsFragment fragment = (EventsFragment) getSupportFragmentManager().findFragmentById(R.id.events_fragment);
 
-        if (id == R.id.action_delete) {
-            getContentResolver().delete(MyContentProvider.CONTENT_URI, null, null);
-            return true;
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                fragment.refreshEvents();
+                break;
+            case R.id.add_event:
+                fragment.showInputDialogToAddNewEvent();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

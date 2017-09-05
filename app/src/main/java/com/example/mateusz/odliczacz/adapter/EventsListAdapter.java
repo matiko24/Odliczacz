@@ -31,7 +31,7 @@ public class EventsListAdapter extends CursorAdapter {
         TextView eventNameTV = (TextView) view.findViewById(R.id.event_name);
         TextView elapsedTimeTV = (TextView) view.findViewById(R.id.event_elapsed_time);
 
-        String eventName = cursor.getString(1);
+        String eventNameString = cursor.getString(1);
         String elapsedTimeString = cursor.getString(2);
 
         DateTime elapsedTimeDataTime = DateTime.parse(elapsedTimeString);
@@ -39,7 +39,6 @@ public class EventsListAdapter extends CursorAdapter {
 
         Period differenceBetweenDates;
         String periodToDisplay = "";
-        System.out.println(currentDate.isAfter(elapsedTimeDataTime));
         if (currentDate.isAfter(elapsedTimeDataTime)) {
             differenceBetweenDates = new Period(elapsedTimeDataTime, currentDate, PeriodType.yearMonthDayTime());
         } else {
@@ -77,7 +76,7 @@ public class EventsListAdapter extends CursorAdapter {
             periodToDisplay += getSecondsString(differenceSecunds);
         }
 
-        eventNameTV.setText(eventName);
+        eventNameTV.setText(eventNameString);
         eventNameTV.setTypeface(null, Typeface.BOLD);
         elapsedTimeTV.setText(periodToDisplay);
     }

@@ -5,9 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -39,34 +39,18 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_events_list, container, false);
-
-        FloatingActionButton addNewEventFAB = (FloatingActionButton) view.findViewById(R.id.add_FAB);
-        FloatingActionButton refreshEventsListFAB = (FloatingActionButton) view.findViewById(R.id.refresh_FAB);
-
-        refreshEventsListFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getLoaderManager().restartLoader(0, null, EventsFragment.this);
-            }
-        });
-        addNewEventFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showInputDialogToAddNewEvent();
-            }
-        });
-
         return view;
+    }
+
+    public void refreshEvents() {
+        getLoaderManager().restartLoader(0, null, EventsFragment.this);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        String[] projection = {Event.EventEntry._ID, Event.EventEntry.EVENT_NAME, Event.EventEntry.EVENT_DATE};
-        Cursor eventsCursor = getActivity().getContentResolver().query(MyContentProvider.CONTENT_URI, projection, Event.EventEntry.EVENT_NAME, null, null);
-
-        eventsListAdapter = new EventsListAdapter(getContext(), eventsCursor, 0);
+        eventsListAdapter = new EventsListAdapter(getContext(), getEventsCursor(), 0);
         setListAdapter(eventsListAdapter);
         getLoaderManager().initLoader(0, null, this);
 
@@ -78,7 +62,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
                 values.put(Event.EventEntry.EVENT_DATE, getCurrentData());
 
                 getContext().getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
-                getLoaderManager().restartLoader(0, null, EventsFragment.this);
+                refreshEvents();
 
                 Toast.makeText(getActivity(), getString(R.string.toast_reset_date), Toast.LENGTH_SHORT).show();
                 return true;
@@ -89,11 +73,15 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), EventDetailActivity.class);
                 intent.putExtra("event_name", eventsListAdapter.getCursor().getString(1));
-                intent.putExtra("event_date", eventsListAdapter.getCursor().getString(2));
                 startActivity(intent);
             }
         });
 
+    }
+
+    private Cursor getEventsCursor() {
+        String[] projection = {Event.EventEntry._ID, Event.EventEntry.EVENT_NAME, Event.EventEntry.EVENT_DATE};
+        return getActivity().getContentResolver().query(MyContentProvider.CONTENT_URI, projection, Event.EventEntry.EVENT_NAME, null, null);
     }
 
     @Override
@@ -113,9 +101,9 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
         eventsListAdapter.swapCursor(null);
     }
 
-    protected void showInputDialogToAddNewEvent() {
+    public void showInputDialogToAddNewEvent() {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+        View promptView = layoutInflater.inflate(R.layout.add_event_input_dialog, null);
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setView(promptView);
@@ -156,12 +144,21 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
                     if (isNowEventCheckBox.isChecked()) {
                         values.put(Event.EventEntry.EVENT_DATE, getCurrentData());
                     } else {
-                        //Todo: depracted getTime metod
-                        DateTime userSetDate = new DateTime(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                        int selectedHour, selectedMinute;
+
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            selectedHour = timePicker.getHour();
+                            selectedMinute = timePicker.getMinute();
+                        } else {
+                            selectedHour = timePicker.getCurrentHour();
+                            selectedMinute = timePicker.getCurrentMinute();
+                        }
+
+                        DateTime userSetDate = new DateTime(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(), selectedHour, selectedMinute);
                         values.put(Event.EventEntry.EVENT_DATE, userSetDate.toString());
                     }
                     getContext().getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
-                    getLoaderManager().restartLoader(0, null, EventsFragment.this);
+                    refreshEvents();
                 }
             }
 
@@ -183,6 +180,11 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
 
     private boolean ifSuchNameEventExist(String eventName) {
         Cursor cursor = getActivity().getContentResolver().query(Uri.parse(MyContentProvider.CONTENT_URI + "/" + eventName), new String[]{"name"}, null, null, null);
-        return cursor.getCount() > 0;
+        boolean isExist = false;
+        if (cursor != null) {
+            isExist = cursor.getCount() > 0;
+            cursor.close();
+        }
+        return isExist;
     }
 }

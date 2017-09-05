@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">Odliczacz</string>
     <string name="action_settings">Settings</string>
-    <string name="action_refresh">Odśwież</string>
-    <string name="action_delete">Usuń wszystkie</string>
+    <string name="action_delete">Delete</string>
     <string name="event_date">Data wydarzenia:</string>
-    <string name="delete_event">USUŃ WYDARZENIE</string>
     <string name="toast_reset_date">Data została zresetowana</string>
     <string name="toast_event_without_name">Wydarzenie bez nazwy nie zostało dodane</string>
     <string name="toast_event_with_name_which_exists">"Istnieje już wydarzenie o takiej nazwie"</string>
@@ -12,6 +10,16 @@
     <string name="yes">Tak</string>
     <string name="delete_confirmation">Na pewno usunąć?</string>
     <string name="event_history">HISTORIA WYDARZENIA</string>
+    <string name="your_events">TWOJE WYDARZENIA</string>
+    <string name="save_image">Save description image</string>
+    <string name="refresh_events_menu_option">refresh events</string>
+    <string name="add_event_menu_option">add event</string>
+    <string name="name">Nazwa :</string>
+    <string name="now">teraz</string>
+    <string name="change_event_name_information">Podaj nową nazwę dla tego wydarzenia</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="delete_imagebutton_description">delete event image button</string>
 
     <string-array name="units_of_time">
         <item>Rok</item>

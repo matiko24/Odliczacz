@@ -6,10 +6,9 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/input_dialog_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nazwa :"
+        android:text="@string/name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -33,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="teraz" />
+            android:text="@string/now" />
     </LinearLayout>
 
     <DatePicker
@@ -41,12 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
-        android:datePickerMode="spinner"></DatePicker>
+        android:datePickerMode="spinner" />
 
     <TimePicker
         android:id="@+id/time_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:timePickerMode="spinner"></TimePicker>
+        android:timePickerMode="spinner" />
 
 </LinearLayout>

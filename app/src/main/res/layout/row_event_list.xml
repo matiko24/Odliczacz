@@ -8,7 +8,7 @@
         android:id="@+id/event_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="@dimen/event_name_text_size"
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/colorEventText" />
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/event_elapsed_time_text_size"
-        android:layout_marginTop="5sp"
+        android:layout_marginTop="@dimen/event_elapsed_time_margin_top"
         android:gravity="center"
         android:textColor="@color/colorText"/>
 </LinearLayout>
