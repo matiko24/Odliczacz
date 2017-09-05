@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz.fragment;
+package com.matekome.odliczacz.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -25,11 +25,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mateusz.odliczacz.R;
-import com.example.mateusz.odliczacz.activity.MainActivity;
-import com.example.mateusz.odliczacz.adapter.EventHistoryListAdapter;
-import com.example.mateusz.odliczacz.data.Event;
-import com.example.mateusz.odliczacz.data.MyContentProvider;
+import com.matekome.odliczacz.R;
+import com.matekome.odliczacz.activity.MainActivity;
+import com.matekome.odliczacz.adapter.EventHistoryListAdapter;
+import com.matekome.odliczacz.data.Event;
+import com.matekome.odliczacz.data.MyContentProvider;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -78,7 +78,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
 
                 eventDescriptionEditText.clearFocus();
                 hideKeyboard();
-
                 getLoaderManager().restartLoader(0, null, EventDetailFragment.this);
 
             }
@@ -179,7 +178,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         alertDialog.show();
     }
 
-    private boolean ifSuchNameEventExist(String eventName) {
+    public boolean ifSuchNameEventExist(String eventName) {
         Cursor cursor = getActivity().getContentResolver().query(Uri.parse(MyContentProvider.CONTENT_URI + "/" + eventName), new String[]{"name"}, null, null, null);
         boolean isExist = false;
         if (cursor != null) {

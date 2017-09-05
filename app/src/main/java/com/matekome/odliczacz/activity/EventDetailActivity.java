@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz.activity;
+package com.matekome.odliczacz.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.mateusz.odliczacz.R;
-import com.example.mateusz.odliczacz.fragment.EventDetailFragment;
+import com.matekome.odliczacz.R;
+import com.matekome.odliczacz.fragment.EventDetailFragment;
 
 public class EventDetailActivity extends AppCompatActivity {
 

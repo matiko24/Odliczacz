@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz.data;
+package com.matekome.odliczacz.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

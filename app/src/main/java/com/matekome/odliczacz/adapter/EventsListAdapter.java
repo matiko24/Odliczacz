@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz.adapter;
+package com.matekome.odliczacz.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.mateusz.odliczacz.R;
+import com.matekome.odliczacz.R;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;

@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz.fragment;
+package com.matekome.odliczacz.fragment;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -25,11 +25,11 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.mateusz.odliczacz.R;
-import com.example.mateusz.odliczacz.activity.EventDetailActivity;
-import com.example.mateusz.odliczacz.adapter.EventsListAdapter;
-import com.example.mateusz.odliczacz.data.Event;
-import com.example.mateusz.odliczacz.data.MyContentProvider;
+import com.matekome.odliczacz.R;
+import com.matekome.odliczacz.activity.EventDetailActivity;
+import com.matekome.odliczacz.adapter.EventsListAdapter;
+import com.matekome.odliczacz.data.Event;
+import com.matekome.odliczacz.data.MyContentProvider;
 
 import org.joda.time.DateTime;
 

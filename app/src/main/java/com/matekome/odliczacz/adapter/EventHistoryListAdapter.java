@@ -1,7 +1,8 @@
-package com.example.mateusz.odliczacz.adapter;
+package com.matekome.odliczacz.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
@@ -12,10 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.mateusz.odliczacz.R;
-import com.example.mateusz.odliczacz.data.Event;
-import com.example.mateusz.odliczacz.data.MyContentProvider;
-import com.example.mateusz.odliczacz.fragment.EventDetailFragment;
+import com.matekome.odliczacz.R;
+import com.matekome.odliczacz.activity.MainActivity;
+import com.matekome.odliczacz.data.Event;
+import com.matekome.odliczacz.data.MyContentProvider;
+import com.matekome.odliczacz.fragment.EventDetailFragment;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -63,7 +65,13 @@ public class EventHistoryListAdapter extends CursorAdapter {
                         String[] projection = {Event.EventEntry._ID, Event.EventEntry.EVENT_NAME, Event.EventEntry.EVENT_DATE, Event.EventEntry.EVENT_DESCRIPTION};
                         swapCursor(context.getContentResolver().query(uri, projection, null, null, null));
 
-                        fragment.setLastEventValues();
+                        if (fragment.ifSuchNameEventExist(eventName))
+                            fragment.setLastEventValues();
+                        else {
+                            Intent intent = new Intent(context, MainActivity.class);
+                            context.startActivity(intent);
+                        }
+
                     }
                 }).setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override

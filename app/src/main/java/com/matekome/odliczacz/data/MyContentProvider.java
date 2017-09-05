@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz.data;
+package com.matekome.odliczacz.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -18,7 +18,7 @@ public class MyContentProvider extends ContentProvider {
     private static final int EVENTS = 10;
     private static final int EVENT_ID = 20;
 
-    private static final String AUTHORITY = "com.example.mateusz.odliczacz";
+    private static final String AUTHORITY = "com.matekome.odliczacz";
     private static final String BASE_PATH = "events";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);

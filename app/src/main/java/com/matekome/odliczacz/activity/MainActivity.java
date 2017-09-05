@@ -1,4 +1,4 @@
-package com.example.mateusz.odliczacz.activity;
+package com.matekome.odliczacz.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,10 +6,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.mateusz.odliczacz.R;
-import com.example.mateusz.odliczacz.fragment.EventsFragment;
+import com.matekome.odliczacz.R;
+import com.matekome.odliczacz.fragment.EventsFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        System.exit(0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
