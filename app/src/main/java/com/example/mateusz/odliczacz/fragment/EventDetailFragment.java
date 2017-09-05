@@ -1,6 +1,7 @@
 package com.example.mateusz.odliczacz.fragment;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -75,6 +77,8 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                 getActivity().getContentResolver().update(uri, values, null, null);
 
                 eventDescriptionEditText.clearFocus();
+                hideKeyboard();
+
                 getLoaderManager().restartLoader(0, null, EventDetailFragment.this);
 
             }
@@ -106,6 +110,12 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         });
 
         return view;
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void deleteEvent() {
