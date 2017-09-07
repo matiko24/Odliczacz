@@ -26,6 +26,7 @@
     <string name="since_event">Od wydarzenia mineło:</string>
     <string name="action_add">add event occurrence</string>
     <string name="description">Opis</string>
+    <string name="add_event_occurrence">Dodaj nowe wystapienie tego wydarzenia</string>
 
     <string-array name="units_of_time">
         <item>Okres</item>

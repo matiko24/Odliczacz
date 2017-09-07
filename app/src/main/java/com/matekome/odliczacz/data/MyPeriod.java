@@ -59,7 +59,7 @@ public class MyPeriod {
         String secundString = String.valueOf(second);
         if (second == 1)
             secundString += "sekunda";
-        else if (second < 5)
+        else if (second < 5 && second != 0)
             secundString += "sekundy";
         else
             secundString += "sekund";

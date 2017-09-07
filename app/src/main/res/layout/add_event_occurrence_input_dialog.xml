@@ -5,6 +5,13 @@
     android:orientation="vertical"
     android:padding="10dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_event_occurrence"
+        android:textSize="@dimen/text_size" />
+
     <DatePicker
         android:id="@+id/date_picker"
         android:layout_width="match_parent"
