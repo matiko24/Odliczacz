@@ -4,16 +4,23 @@
     tools:context="com.matekome.odliczacz.com.matekome.odliczacz.activity.MainActivity">
 
     <item
+        android:id="@+id/add"
+        android:icon="@drawable/ic_action_add"
+        android:orderInCategory="1"
+        android:title="@string/action_add"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@string/action_delete"
         app:showAsAction="ifRoom" />
 

@@ -23,6 +23,9 @@ public class EventDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         EventDetailFragment fragment = (EventDetailFragment) getSupportFragmentManager().findFragmentById(R.id.event_detail_fragment);
         switch (item.getItemId()) {
+            case R.id.add:
+                fragment.addEventOccurrence();
+                break;
             case R.id.settings:
                 fragment.editEventName();
                 break;
@@ -44,8 +47,8 @@ public class EventDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);

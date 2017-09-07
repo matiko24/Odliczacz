@@ -72,7 +72,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), EventDetailActivity.class);
-                intent.putExtra("event_name", eventsListAdapter.getCursor().getString(1));
+                intent.putExtra("eventName", eventsListAdapter.getCursor().getString(1));
                 startActivity(intent);
             }
         });
@@ -130,7 +130,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
 
         final EditText newEventNameEditText = (EditText) promptView.findViewById(R.id.new_event_name);
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 String newEventNameString = newEventNameEditText.getText().toString();
 
@@ -163,7 +163,7 @@ public class EventsFragment extends ListFragment implements LoaderManager.Loader
             }
 
         });
-        alertDialogBuilder.setNegativeButton("Cancel",
+        alertDialogBuilder.setNegativeButton(getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
