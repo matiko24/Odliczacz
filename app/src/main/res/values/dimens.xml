@@ -1,12 +1,17 @@
 <resources>
-    <dimen name="tablerow_margin">15dp</dimen>
-    <dimen name="text_size">20sp</dimen>
-    <dimen name="event_elapsed_time_text_size">20sp</dimen>
-    <dimen name="history_text_view_margin_top">40dp</dimen>
-    <dimen name="divider_height">10sp</dimen>
-    <dimen name="history_list_view_margin_top">15dp</dimen>
-    <dimen name="event_name_text_size">25sp</dimen>
-    <dimen name="event_elapsed_time_margin_top">5sp</dimen>
-    <dimen name="table_margin_left">20dp</dimen>
-    <dimen name="events_divider_height">16dp</dimen>
+
+    <!--  font sizes    -->
+    <dimen name="font_large">25sp</dimen>
+    <dimen name="font_normal">20sp</dimen>
+
+    <!--  typical spacing between two views  -->
+    <dimen name="spacing_huge">40dp</dimen>
+    <dimen name="spacing_large">20dp</dimen>
+    <dimen name="spacing_normal">15dp</dimen>
+    <dimen name="spacing_small">5dp</dimen>
+
+    <!-- divider size  -->
+    <dimen name="divider_large">16sp</dimen>
+    <dimen name="divider_normal">10sp</dimen>
+
 </resources>

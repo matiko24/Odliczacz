@@ -1,8 +1,8 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/gray_dark</item>
+        <item name="colorPrimaryDark">@color/gray_very_dark</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -8,17 +8,17 @@
         android:id="@+id/event_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/event_name_text_size"
+        android:textSize="@dimen/font_large"
         android:textStyle="bold"
         android:gravity="center"
-        android:textColor="@color/colorEventText" />
+        android:textColor="@color/gray_light" />
 
     <TextView
         android:id="@+id/event_elapsed_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/event_elapsed_time_text_size"
-        android:layout_marginTop="@dimen/event_elapsed_time_margin_top"
+        android:textSize="@dimen/font_normal"
+        android:layout_marginTop="@dimen/spacing_small"
         android:gravity="center"
-        android:textColor="@color/colorText"/>
+        android:textColor="@color/green_light" />
 </LinearLayout>

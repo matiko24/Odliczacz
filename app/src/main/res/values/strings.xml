@@ -9,8 +9,8 @@
     <string name="no">Nie</string>
     <string name="yes">Tak</string>
     <string name="delete_confirmation">Na pewno usunąć?</string>
-    <string name="event_history">HISTORIA WYDARZENIA</string>
-    <string name="your_events">TWOJE WYDARZENIA</string>
+    <string name="event_history">Historia wydarzenia</string>
+    <string name="your_events">Twoje wydarzenia</string>
     <string name="save_image">Save description image</string>
     <string name="refresh_events_menu_option">refresh events</string>
     <string name="add_event_menu_option">add event</string>
@@ -27,6 +27,7 @@
     <string name="action_add">add event occurrence</string>
     <string name="description">Opis</string>
     <string name="add_event_occurrence">Dodaj nowe wystapienie tego wydarzenia</string>
+    <string name="empty_list_message">Nie dodałeś rzadnych wydarzeń</string>
 
     <string-array name="units_of_time">
         <item>Okres</item>

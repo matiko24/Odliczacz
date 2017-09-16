@@ -10,9 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +19,13 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.matekome.odliczacz.R;
+import com.matekome.odliczacz.activity.EventDetailActivity;
 import com.matekome.odliczacz.activity.MainActivity;
 import com.matekome.odliczacz.adapter.EventHistoryListAdapter;
 import com.matekome.odliczacz.data.Event;
@@ -45,7 +42,7 @@ import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class EventDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EventDetailFragment extends Fragment {
 
     TextView eventDateTextView;
     TextView eventNameTextView;
@@ -55,7 +52,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     Spinner spinner;
     EventHistoryListAdapter adapter;
     ImageButton saveDescriptionButton;
-    ListView eventHistoryListView;
     String eventName;
 
     @Nullable
@@ -71,7 +67,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         sinceOrToTextView = (TextView) view.findViewById(R.id.sinceOrToString);
         spinner = (Spinner) view.findViewById(R.id.spinner);
         eventDescriptionEditText = (EditText) view.findViewById(R.id.event_description);
-        eventHistoryListView = (ListView) view.findViewById(R.id.event_history_list_view);
         saveDescriptionButton = (ImageButton) view.findViewById(R.id.save_description_button);
 
         eventNameTextView.setText(eventName);
@@ -88,32 +83,19 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
 
                 eventDescriptionEditText.clearFocus();
                 hideKeyboard();
-                getLoaderManager().restartLoader(0, null, EventDetailFragment.this);
-
+                EventOccurrenceFragment fragment = (EventOccurrenceFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.event_occurrence_fragment);
+                fragment.restartLoader();
             }
         });
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setElapsedTimeTextView(position, eventDateTextView.getTag().toString());
+                setElapsedTimeTextView(eventDateTextView.getTag().toString());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        adapter = new EventHistoryListAdapter(getContext(), getCursor(), 0, EventDetailFragment.this);
-        eventHistoryListView.setAdapter(adapter);
-        getLoaderManager().initLoader(0, null, this);
-
-        eventHistoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = adapter.getCursor();
-                setEventValues(cursor.getLong(0), cursor.getString(2), cursor.getString(3));
-                setElapsedTimeTextView(spinner.getSelectedItemPosition(), cursor.getString(2));
             }
         });
 
@@ -172,8 +154,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                     ContentValues values = new ContentValues();
                     values.put(Event.EventEntry.EVENT_NAME, newEventName);
                     getActivity().getContentResolver().update(MyContentProvider.CONTENT_URI, values, Event.EventEntry.EVENT_NAME + "='" + eventName + "'", null);
-                    getActivity().setTitle(editingEventName.getText().toString());
-                    getLoaderManager().restartLoader(0, null, EventDetailFragment.this);
+                    eventNameTextView.setText(editingEventName.getText().toString());
+                    Intent intent = new Intent(getContext(), EventDetailActivity.class);
+                    intent.putExtra("eventName", editingEventName.getText().toString());
+                    startActivity(intent);
                 }
             }
         }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -197,7 +181,8 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         return isExist;
     }
 
-    private void setElapsedTimeTextView(int position, String eventDateString) {
+    public void setElapsedTimeTextView(String eventDateString) {
+        int position = spinner.getSelectedItemPosition();
         DateTime currentDate = new DateTime();
         DateTime eventDate = DateTime.parse(eventDateString);
         switch (position) {
@@ -231,7 +216,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         setEventValues(cursor.getLong(0), cursor.getString(2), cursor.getString(3));
     }
 
-    private void setEventValues(Long eventId, String eventDate, String eventDescription) {
+    public void setEventValues(Long eventId, String eventDate, String eventDescription) {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd.MM.YYYY HH:mm");
         DateTime eventDateDT = DateTime.parse(eventDate);
@@ -259,24 +244,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         Uri uri = Uri.parse(MyContentProvider.CONTENT_URI + "/" + eventName);
         Cursor eventsCursor = getActivity().getContentResolver().query(uri, projection, null, null, Event.EventEntry.EVENT_DATE + " DESC");
         return eventsCursor;
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = {Event.EventEntry._ID, Event.EventEntry.EVENT_NAME, Event.EventEntry.EVENT_DATE, Event.EventEntry.EVENT_DESCRIPTION};
-        Uri uri = Uri.parse(MyContentProvider.CONTENT_URI + "/" + eventName);
-        Loader<Cursor> loader = new CursorLoader(getContext(), uri, projection, null, null, Event.EventEntry.EVENT_DATE + " DESC");
-        return loader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
     }
 
     public void addEventOccurrence() {
@@ -311,7 +278,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                 values.put(Event.EventEntry.EVENT_DATE, userSetDate.toString());
 
                 getContext().getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
-                getLoaderManager().restartLoader(0, null, EventDetailFragment.this);
+
                 setLastEventValues();
             }
 

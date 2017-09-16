@@ -63,7 +63,7 @@ public class EventHistoryListAdapter extends CursorAdapter {
 
                         Uri uri = Uri.parse(MyContentProvider.CONTENT_URI + "/" + eventName);
                         String[] projection = {Event.EventEntry._ID, Event.EventEntry.EVENT_NAME, Event.EventEntry.EVENT_DATE, Event.EventEntry.EVENT_DESCRIPTION};
-                        swapCursor(context.getContentResolver().query(uri, projection, null, null, null));
+                        swapCursor(context.getContentResolver().query(uri, projection, null, null, Event.EventEntry.EVENT_DATE + " DESC"));
 
                         if (fragment.ifSuchNameEventExist(eventName))
                             fragment.setLastEventValues();

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.matekome.odliczacz.activity.EventDetailActivity"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -22,8 +20,18 @@
     </android.support.design.widget.AppBarLayout>
 
     <fragment
-        android:name="com.matekome.odliczacz.fragment.EventDetailFragment"
         android:id="@+id/event_detail_fragment"
+        android:name="com.matekome.odliczacz.fragment.EventDetailFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_normal" />
+
+    <fragment
+        android:id="@+id/event_occurrence_fragment"
+        android:name="com.matekome.odliczacz.fragment.EventOccurrenceFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_huge" />
 </LinearLayout>

@@ -8,9 +8,17 @@
         android:id="@+id/android:list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/events_divider_height"
+        android:layout_marginTop="@dimen/divider_large"
         android:layout_weight="1"
-        android:dividerHeight="@dimen/divider_height"
+        android:dividerHeight="@dimen/divider_normal"
         android:drawSelectorOnTop="false" />
+
+    <TextView
+        android:textSize="@dimen/font_normal"
+        android:gravity="center_horizontal"
+        android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_list_message" />
 </LinearLayout>
 

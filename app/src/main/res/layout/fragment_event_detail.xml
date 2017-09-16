@@ -7,47 +7,45 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/table_margin_left"
         android:stretchColumns="1">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/tablerow_margin"
             android:gravity="center_horizontal">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/event_name"
-                android:textSize="@dimen/text_size" />
+                android:textSize="@dimen/font_normal" />
 
             <TextView
                 android:id="@+id/event_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="@dimen/text_size" />
+                android:textSize="@dimen/font_normal" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/tablerow_margin"
+            android:layout_marginTop="@dimen/spacing_normal"
             android:gravity="center_horizontal">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/event_date"
-                android:textSize="@dimen/text_size" />
+                android:textSize="@dimen/font_normal" />
 
             <TextView
                 android:id="@+id/event_date_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="@dimen/text_size" />
+                android:textSize="@dimen/font_normal" />
 
         </TableRow>
 
@@ -56,7 +54,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/tablerow_margin"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:focusableInTouchMode="true"
         android:orientation="horizontal">
 
@@ -65,24 +63,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/green"
             android:gravity="center_horizontal"
             android:hint="@string/description"
             android:inputType="textMultiLine"
-            android:textSize="@dimen/text_size" />
+            android:textSize="@dimen/font_normal" />
 
         <ImageButton
             android:id="@+id/save_description_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/save_image"
-            android:src="@drawable/ic_save" />
+            android:src="@drawable/ic_action_save" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -90,40 +89,24 @@
             android:id="@+id/sinceOrToString"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size" />
+            android:textSize="@dimen/font_normal" />
 
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/units_of_time"
-            android:scrollbarSize="@dimen/text_size" />
+            android:scrollbarSize="@dimen/font_normal" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/event_elapsed_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/tablerow_margin"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:gravity="center_horizontal"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/text_size" />
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/history_text_view_margin_top"
-        android:gravity="center"
-        android:text="@string/event_history"
-        android:textSize="@dimen/text_size" />
-
-    <ListView
-        android:id="@+id/event_history_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/history_list_view_margin_top"
-        android:dividerHeight="@dimen/divider_height" />
+        android:textColor="@color/green"
+        android:textSize="@dimen/font_normal" />
 
 </LinearLayout>
     

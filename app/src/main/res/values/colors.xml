@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000a12</color>
-    <color name="colorPrimaryDark">#263238</color>
-    <color name="colorAccent">#4caf50</color>
-    <color name="colorText">#80e27e</color>
-    <color name="colorEventText">#cfd8dc</color>
+    <!-- grayscale  -->
+    <color name="gray_very_dark">#111111</color>
+    <color name="gray_dark">#222222</color>
+    <color name="gray_light">#cfd8dc</color>
+
+    <!-- greenscale -->
+    <color name="green">#4caf50</color>
+    <color name="green_light">#80e27e</color>
 </resources>
